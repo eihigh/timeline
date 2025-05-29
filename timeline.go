@@ -87,7 +87,7 @@ func (t Timeline[T]) LoopN(duration T, n int, f ...func(int, Timeline[T])) Timel
 // Once executes callbacks at the current time point.
 // This is useful for one-time events like playing sounds or initializing states.
 //
-// Note: This method only executes when t.now exactly equals t.from.
+// Note: This method only executes when Elapsed() returns 0.
 // It may not work reliably with variable time steps or when frames are skipped.
 // For reliable execution, ensure time increments by consistent steps (e.g., 1 per frame).
 func (t Timeline[T]) Once(f ...func()) Timeline[T] {
