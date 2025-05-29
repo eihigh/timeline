@@ -20,8 +20,8 @@ func (t Timeline[T]) Elapsed() T {
 	return t.now - t.from
 }
 
-// Elapsedf returns elapsed time as float64.
-func (t Timeline[T]) Elapsedf() float64 {
+// ElapsedF returns elapsed time as float64.
+func (t Timeline[T]) ElapsedF() float64 {
 	return float64(t.now - t.from)
 }
 
@@ -82,4 +82,19 @@ func (t Timeline[T]) LoopN(duration T, n int, f ...func(int, Timeline[T])) Timel
 		to:   t.from + T(n)*duration,
 		now:  t.now,
 	}
+}
+
+// Once executes callbacks at the current time point.
+// This is useful for one-time events like playing sounds or initializing states.
+//
+// Note: This method only executes when t.now exactly equals t.from.
+// It may not work reliably with variable time steps or when frames are skipped.
+// For reliable execution, ensure time increments by consistent steps (e.g., 1 per frame).
+func (t Timeline[T]) Once(f ...func()) Timeline[T] {
+	if t.now == t.from {
+		for _, fn := range f {
+			fn()
+		}
+	}
+	return t
 }

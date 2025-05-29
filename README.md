@@ -64,6 +64,25 @@ elapsedF := tl.Elapsedf()     // As float64
 ratio := tl.Ratio()           // Progress (0.0 to 1.0)
 ```
 
+### One-time Events
+
+Execute callbacks at specific time points:
+
+```go
+timeline.New(t).
+    Once(func() {
+        // Executes when t=0 (initialization)
+    }).
+    Span(3, func(tl Timeline[int]) {
+        // Executes during t=0,1,2
+    }).
+    Once(func() {
+        // Executes when t=3 (transition)
+    })
+```
+
+**Note**: `Once` only executes when time exactly matches the current position. It may not work reliably with variable time steps.
+
 ### Nested Timelines
 
 Create complex timing patterns by nesting timelines:

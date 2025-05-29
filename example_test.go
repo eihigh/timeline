@@ -128,3 +128,39 @@ func Example_nested() {
 	// t=10: Outer span 2, inner span C (ratio=0.0)
 	// t=11: Outer span 2, inner span C (ratio=0.5)
 }
+
+func Example_once() {
+	// Once: Execute callbacks at specific time points
+	fmt.Println("=== Once Example ===")
+	for t := range 10 {
+		timeline.New(t).
+			Once(func() {
+				fmt.Printf("t=%d: Initialize at start\n", t)
+			}).
+			Span(3, func(tl TL) {
+				fmt.Printf("t=%d: Animation phase 1 (elapsed=%d)\n", t, tl.Elapsed())
+			}).
+			Once(func() {
+				fmt.Printf("t=%d: Play sound effect\n", t)
+			}).
+			Span(4, func(tl TL) {
+				fmt.Printf("t=%d: Animation phase 2 (elapsed=%d)\n", t, tl.Elapsed())
+			}).
+			Once(func() {
+				fmt.Printf("t=%d: Cleanup\n", t)
+			})
+	}
+
+	// Output:
+	// === Once Example ===
+	// t=0: Initialize at start
+	// t=0: Animation phase 1 (elapsed=0)
+	// t=1: Animation phase 1 (elapsed=1)
+	// t=2: Animation phase 1 (elapsed=2)
+	// t=3: Play sound effect
+	// t=3: Animation phase 2 (elapsed=0)
+	// t=4: Animation phase 2 (elapsed=1)
+	// t=5: Animation phase 2 (elapsed=2)
+	// t=6: Animation phase 2 (elapsed=3)
+	// t=7: Cleanup
+}
