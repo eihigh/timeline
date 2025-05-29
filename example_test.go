@@ -129,7 +129,7 @@ func Example_nested() {
 	// t=11: Outer span 2, inner span C (ratio=0.5)
 }
 
-func Example_once() {
+func ExampleTimeline_Once() {
 	// Once: Execute callbacks at specific time points
 	fmt.Println("=== Once Example ===")
 	for t := range 10 {

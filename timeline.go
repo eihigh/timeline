@@ -1,17 +1,18 @@
 // Package timeline provides time-based sequencing for animations and events.
 package timeline
 
-import (
-	"github.com/eihigh/ng"
-)
+type integer interface {
+	~int | ~int8 | ~int16 | ~int32 | ~int64 |
+		~uint | ~uint8 | ~uint16 | ~uint32 | ~uint64 | ~uintptr
+}
 
 // Timeline is a builder for creating time-based sequences of animations and events.
-type Timeline[T ng.Int] struct {
+type Timeline[T integer] struct {
 	from, to, now T
 }
 
 // New creates a timeline starting at 0 with the given current time.
-func New[T ng.Int](now T) Timeline[T] {
+func New[T integer](now T) Timeline[T] {
 	return Timeline[T]{from: 0, now: now}
 }
 
